@@ -1,16 +1,10 @@
-# flutterestudo
+# Aplicativo SConvert
 
-A new Flutter project.
+Aplicativo mobile feito em Flutter que permite cadastro de usuário, login, alterar os dados de cadastro e acompanhar valores das principais moedas e cryptoativos.
 
-## Getting Started
+# API's Utilizadas
 
-This project is a starting point for a Flutter application.
+As API's utilizadas foram ExchangeRate API e CoinGecko API.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Requisitos
+Dart, Flutter, Android Studio
