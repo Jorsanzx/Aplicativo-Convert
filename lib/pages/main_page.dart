@@ -34,8 +34,25 @@ class _MainPageState extends State<MainPage> {
   Map<String, double>? _cotacoes;
   bool _isLoading = true;
   String? _errorMessage;
+  List<String> priceList = [];
 
-  int _selectedIndex = 0; // Indica qual aba está selecionada
+  int _selectedIndex = 0;
+  List<NavigationDestination> pagesMenu() {
+    return [
+      NavigationDestination(
+        icon: Icon(
+          Icons.attach_money_sharp,
+          size: 30,
+          color: Colors.amber,
+        ),
+        label: 'Coins',
+      ),
+      NavigationDestination(
+        icon: Icon(Icons.currency_bitcoin),
+        label: 'Crypto',
+      )
+    ];
+  } // Indica qual aba está selecionada
 
   @override
   void initState() {
@@ -64,7 +81,12 @@ class _MainPageState extends State<MainPage> {
 
           setState(() {
             _cotacoes = cotacoes;
-            _isLoading = false; // Atualize o estado corretamente
+            _isLoading = false;
+            priceList = _cotacoes!.entries.map((ett) {
+              return ett.value.toStringAsFixed(2);
+            }).toList();
+
+            // Atualize o estado corretamente
           });
         } else {
           throw Exception('Dados inválidos recebidos da API.');
@@ -105,148 +127,167 @@ class _MainPageState extends State<MainPage> {
     final int? idUsuario = ModalRoute.of(context)?.settings.arguments as int?;
     return SafeArea(
         child: Scaffold(
-      drawer: Drawer(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InkWell(
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text("Dados cadastrais")),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DadosCadastroPage(),
-                          settings: RouteSettings(arguments: idUsuario)));
-                },
-              ),
-              Divider(),
-              InkWell(
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text("Configurações")),
-                onTap: () {},
-              ),
-              Divider(),
-              InkWell(
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text("Termos de uso e privacidade")),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TermosDeUsoPage()),
-                  );
-                },
-              ),
-              Divider(),
-              InkWell(
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    width: double.infinity,
-                    child: Text("Sobre")),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const sobrePage()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black,
-        title: Text(
-          "PAGINA PRINCIPAL",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _errorMessage != null
-              ? Center(child: Text('Erro: $_errorMessage'))
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Cotação das principais moedas",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 16),
-                      Table(
-                        border: TableBorder.all(),
-                        columnWidths: const {
-                          0: FlexColumnWidth(2),
-                          1: FlexColumnWidth(3),
-                        },
-                        children: [
-                          TableRow(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Moeda',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Valor (R\$)',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                          ..._cotacoes!.entries.map((entry) {
-                            return TableRow(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(entry.key),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(entry.value.toStringAsFixed(2)),
-                                ),
-                              ],
-                            );
-                          }).toList(),
-                        ],
-                      ),
-                    ],
-                  ),
+            backgroundColor: Color(0xffffffff),
+            drawer: Drawer(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          width: double.infinity,
+                          child: Text("Dados cadastrais")),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DadosCadastroPage(),
+                                settings: RouteSettings(arguments: idUsuario)));
+                      },
+                    ),
+                    Divider(),
+                    InkWell(
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          width: double.infinity,
+                          child: Text("Configurações")),
+                      onTap: () {},
+                    ),
+                    Divider(),
+                    InkWell(
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          width: double.infinity,
+                          child: Text("Termos de uso e privacidade")),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TermosDeUsoPage()),
+                        );
+                      },
+                    ),
+                    Divider(),
+                    InkWell(
+                      child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          width: double.infinity,
+                          child: Text("Sobre")),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const sobrePage()),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
-        unselectedItemColor: Colors.white,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.money),
-            label: 'Moeda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.currency_bitcoin),
-            label: 'Crypto',
-          ),
-        ],
-      ),
-    ));
+              ),
+            ),
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.black87),
+              backgroundColor: Colors.white,
+              surfaceTintColor: Color(0xffffffff),
+              title: Text(
+                "PAGINA PRINCIPAL",
+                style: TextStyle(fontFamily: "Poppins", color: Colors.amber),
+              ),
+            ),
+            body: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _errorMessage != null
+                    ? Center(child: Text('Erro: $_errorMessage'))
+                    : Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Cotação das principais moedas",
+                              style: TextStyle(
+                                  fontSize: 22, fontFamily: "Poppins"),
+                            ),
+                            SizedBox(height: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 2.3, color: Colors.amber.shade400),
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Moeda',
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                            )),
+                                        Text(
+                                          'Valor (\$)',
+                                          style: TextStyle(
+                                            fontFamily: "Poppins",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Colors.amber.shade400,
+                                    thickness: 2.3,
+                                  ),
+                                  SizedBox(
+                                    height: 300,
+                                    child: SingleChildScrollView(
+                                      physics: BouncingScrollPhysics(),
+                                      child: Column(
+                                        children: List.generate(
+                                            priceList.length, (index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0, horizontal: 14),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  _moedas[index],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  priceList[index],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+            bottomNavigationBar: NavigationBar(
+              indicatorColor: Color(0xffffffff),
+              backgroundColor: Color(0xffffffff),
+              destinations: pagesMenu(),
+            )));
   }
 }

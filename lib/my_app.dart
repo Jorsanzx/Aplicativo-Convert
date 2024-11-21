@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterestudo/pages/login_page.dart';
+import 'package:flutterestudo/pages/main_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.red),
-      home: const LoginPAge(),
+      home: const MainPage(),
     );
   }
 }
